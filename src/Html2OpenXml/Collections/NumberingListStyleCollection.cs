@@ -252,7 +252,14 @@ namespace HtmlToOpenXml
 			String type = en.StyleAttributes["list-style-type"];
 			bool orderedList = en.CurrentTag.Equals("<ol>", StringComparison.OrdinalIgnoreCase);
 
-			CreateList(type, orderedList);
+			if (int.TryParse(en.Attributes["start"] ?? "1", out var startAt))
+            {
+                CreateList(type, orderedList, startAt);
+            } else
+            {
+                CreateList(type, orderedList);
+            }
+
             listHtmlElementClasses.Push(en.Attributes.GetAsClass());
 		}
 
@@ -322,7 +329,7 @@ namespace HtmlToOpenXml
 
 		#region CreateList
 
-		public int CreateList(String type, bool orderedList)
+		public int CreateList(String type, bool orderedList, int start = 1)
 		{
 			int absNumId = GetAbsNumIdFromType(type, orderedList);
 			int prevAbsNumId = numInstances.Peek().Value;
@@ -354,7 +361,7 @@ namespace HtmlToOpenXml
                         new NumberingInstance(
                             new AbstractNumId() { Val = absNumId },
 							new LevelOverride(
-								new StartOverrideNumberingValue() { Val = 1 }
+								new StartOverrideNumberingValue() { Val = start }
 							)
 							{ LevelIndex = 0 }
                         )
