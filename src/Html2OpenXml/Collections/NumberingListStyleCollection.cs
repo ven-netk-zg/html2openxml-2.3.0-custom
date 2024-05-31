@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -75,16 +76,20 @@ namespace HtmlToOpenXml
 			AbstractNum[] absNumChildren = new [] {
 				//8 kinds of abstractnum + 1 multi-level.
 				new AbstractNum(
-					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-					new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
-						LevelIndex = 0,
-						LevelText = new LevelText() { Val = "%1." },
-						PreviousParagraphProperties = new PreviousParagraphProperties {
-							Indentation = new Indentation() { Left = "420", Hanging = "360" }
-						}
-					}
+					Enumerable.Range(0, 9).Select((level) =>
+					{
+						return new Level {
+							StartNumberingValue = new StartNumberingValue() { Val = 1 },
+							NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.Decimal },
+							LevelIndex = level,
+							LevelText = new LevelText() { Val = $"%{level + 1}." },
+							PreviousParagraphProperties = new PreviousParagraphProperties {
+								Indentation = new Indentation() { Left = "420", Hanging = "360" }
+							}
+						} as OpenXmlElement;
+                    })
+					.Prepend(new MultiLevelType() { Val = MultiLevelValues.Multilevel })
+					.ToArray()
 				) { AbstractNumberId = absNumIdRef, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "decimal" } },
 				new AbstractNum(
 					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
@@ -120,53 +125,69 @@ namespace HtmlToOpenXml
 					}
 				) { AbstractNumberId = absNumIdRef + 3, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "circle" } },
 				new AbstractNum(
-					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-					new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.UpperLetter },
-						LevelIndex = 0,
-						LevelText = new LevelText() { Val = "%1." },
-						PreviousParagraphProperties = new PreviousParagraphProperties {
-							Indentation = new Indentation() { Left = "420", Hanging = "360" }
-						}
-					}
-				) { AbstractNumberId = absNumIdRef + 4, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "upper-alpha" } },
+                    Enumerable.Range(0, 9).Select((level) =>
+                    {
+                        return new Level {
+                            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.UpperLetter },
+                            LevelIndex = level,
+                            LevelText = new LevelText() { Val = $"%{level + 1}." },
+                            PreviousParagraphProperties = new PreviousParagraphProperties {
+                                Indentation = new Indentation() { Left = "420", Hanging = "360" }
+                            }
+                        } as OpenXmlElement;
+                    })
+                    .Prepend(new MultiLevelType() { Val = MultiLevelValues.Multilevel })
+                    .ToArray()
+                ) { AbstractNumberId = absNumIdRef + 4, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "upper-alpha" } },
 				new AbstractNum(
-					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-					new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.LowerLetter },
-						LevelIndex = 0,
-						LevelText = new LevelText() { Val = "%1." },
-						PreviousParagraphProperties = new PreviousParagraphProperties {
-							Indentation = new Indentation() { Left = "420", Hanging = "360" }
-						}
-					}
+                    Enumerable.Range(0, 9).Select((level) =>
+                    {
+                        return new Level {
+                            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.LowerLetter },
+                            LevelIndex = level,
+                            LevelText = new LevelText() { Val = $"%{level + 1}." },
+                            PreviousParagraphProperties = new PreviousParagraphProperties {
+                                Indentation = new Indentation() { Left = "420", Hanging = "360" }
+                            }
+                        } as OpenXmlElement;
+                    })
+                    .Prepend(new MultiLevelType() { Val = MultiLevelValues.Multilevel })
+                    .ToArray()
 				) { AbstractNumberId = absNumIdRef + 5, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "lower-alpha" } },
 				new AbstractNum(
-					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-					new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.UpperRoman },
-						LevelIndex = 0,
-						LevelText = new LevelText() { Val = "%1." },
-						PreviousParagraphProperties = new PreviousParagraphProperties {
-							Indentation = new Indentation() { Left = "420", Hanging = "360" }
-						}
-					}
-				) { AbstractNumberId = absNumIdRef + 6, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "upper-roman" } },
+                    Enumerable.Range(0, 9).Select((level) =>
+                    {
+                        return new Level {
+                            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.UpperRoman },
+                            LevelIndex = level,
+                            LevelText = new LevelText() { Val = $"%{level + 1}." },
+                            PreviousParagraphProperties = new PreviousParagraphProperties {
+                                Indentation = new Indentation() { Left = "420", Hanging = "360" }
+                            }
+                        } as OpenXmlElement;
+                    })
+                    .Prepend(new MultiLevelType() { Val = MultiLevelValues.Multilevel })
+                    .ToArray()
+                ) { AbstractNumberId = absNumIdRef + 6, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "upper-roman" } },
 				new AbstractNum(
-					new MultiLevelType() { Val = MultiLevelValues.SingleLevel },
-					new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
-						NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.LowerRoman },
-						LevelIndex = 0,
-						LevelText = new LevelText() { Val = "%1." },
-						PreviousParagraphProperties = new PreviousParagraphProperties {
-							Indentation = new Indentation() { Left = "420", Hanging = "360" }
-						}
-					}
-				) { AbstractNumberId = absNumIdRef + 7, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "lower-roman" } },
+                    Enumerable.Range(0, 9).Select((level) =>
+                    {
+                        return new Level {
+                            StartNumberingValue = new StartNumberingValue() { Val = 1 },
+                            NumberingFormat = new NumberingFormat() { Val = NumberFormatValues.LowerRoman },
+                            LevelIndex = level,
+                            LevelText = new LevelText() { Val = $"%{level + 1}." },
+                            PreviousParagraphProperties = new PreviousParagraphProperties {
+                                Indentation = new Indentation() { Left = "420", Hanging = "360" }
+                            }
+                        } as OpenXmlElement;
+                    })
+                    .Prepend(new MultiLevelType() { Val = MultiLevelValues.Multilevel })
+                    .ToArray()
+                ) { AbstractNumberId = absNumIdRef + 7, AbstractNumDefinitionName = new AbstractNumDefinitionName() { Val = "lower-roman" } },
 				// decimal-heading-multi
 				// WARNING: only use this for headings
 				new AbstractNum(
@@ -363,7 +384,7 @@ namespace HtmlToOpenXml
 							new LevelOverride(
 								new StartOverrideNumberingValue() { Val = start }
 							)
-							{ LevelIndex = 0 }
+							{ LevelIndex = levelDepth - 1 }
                         )
                         { NumberID = currentInstanceId });
                 }
@@ -422,7 +443,7 @@ namespace HtmlToOpenXml
 									new Level {
 										StartNumberingValue = new StartNumberingValue() { Val = 1 },
 										NumberingFormat = new NumberingFormat() { Val = lvl.NumberingFormat.Val },
-										LevelIndex = 0,
+										LevelIndex = levelDepth - 1,
 										LevelText = new LevelText() { Val = lvl.LevelText.Val }
 									}
 								) { AbstractNumberId = currentNumId });
