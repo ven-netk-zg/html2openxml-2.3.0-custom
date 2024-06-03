@@ -365,12 +365,12 @@ namespace HtmlToOpenXml
             // save a NumberingInstance if the nested list style is the same as its ancestor.
             // this allows us to nest <ol> and restart the indentation to 1.
             int currentInstanceId = this.InstanceID;
-            if (levelDepth > 1 && absNumId == prevAbsNumId && orderedList)
+            /*if (levelDepth > 1 && absNumId == prevAbsNumId && orderedList)
             {
-                EnsureMultilevel(absNumId);
+                EnsureMultilevel(absNumId, start: start);
             }
             else
-            {
+            {*/
                 // For unordered lists (<ul>), create only one NumberingInstance per level
                 // (MS Word does not tolerate hundreds of identical NumberingInstances)
                 if (orderedList || (levelDepth >= maxlevelDepth))
@@ -388,7 +388,7 @@ namespace HtmlToOpenXml
                         )
                         { NumberID = currentInstanceId });
                 }
-            }
+            //}
 
 			numInstances.Push(new KeyValuePair<int, int>(currentInstanceId, absNumId));
 
@@ -469,7 +469,7 @@ namespace HtmlToOpenXml
 		/// <summary>
 		/// Find a specified AbstractNum by its ID and update its definition to make it multi-level.
 		/// </summary>
-		private void EnsureMultilevel(int absNumId, bool cascading = false)
+		private void EnsureMultilevel(int absNumId, bool cascading = false, int start = 1)
 		{
 			AbstractNum absNumMultilevel = mainPart.NumberingDefinitionsPart.Numbering.Elements<AbstractNum>().SingleOrDefault(a => a.AbstractNumberId.Value == absNumId);
 
@@ -482,7 +482,7 @@ namespace HtmlToOpenXml
 				for (int i = 2; i < 10; i++)
 				{
 					Level level = new Level {
-						StartNumberingValue = new StartNumberingValue() { Val = 1 },
+						StartNumberingValue = new StartNumberingValue() { Val = start },
 						NumberingFormat = new NumberingFormat() { Val = level1.NumberingFormat.Val },
 						LevelIndex = i - 1
 					};
